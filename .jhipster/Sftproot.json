@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "sftpTestCase",
+            "otherEntityName": "sftpTestCase",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "sftproot"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "incomingDirectory",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "outgoingDirectory",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "errorDirectory",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180113021040",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "sftproot",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

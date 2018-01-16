@@ -1,0 +1,34 @@
+
+<div *ngIf="sftproot">
+    <h2><span>Sftproot</span> {{sftproot.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Incoming Directory</span></dt>
+        <dd>
+            <span>{{sftproot.incomingDirectory}}</span>
+        </dd>
+        <dt><span>Outgoing Directory</span></dt>
+        <dd>
+            <span>{{sftproot.outgoingDirectory}}</span>
+        </dd>
+        <dt><span>Error Directory</span></dt>
+        <dd>
+            <span>{{sftproot.errorDirectory}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'sftproot/'+ sftproot.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,62 @@
+<div>
+    <h2>
+        <span>Sftproots</span>
+        <button class="btn btn-primary float-right jh-create-entity create-sftproot" [routerLink]="['/', { outlets: { popup: ['sftproot-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Sftproot
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="sftproots">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Incoming Directory</span></th>
+            <th><span>Outgoing Directory</span></th>
+            <th><span>Error Directory</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sftproot of sftproots ;trackBy: trackId">
+                <td><a [routerLink]="['../sftproot', sftproot.id ]">{{sftproot.id}}</a></td>
+                <td>{{sftproot.incomingDirectory}}</td>
+                <td>{{sftproot.outgoingDirectory}}</td>
+                <td>{{sftproot.errorDirectory}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../sftproot', sftproot.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'sftproot/'+ sftproot.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'sftproot/'+ sftproot.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

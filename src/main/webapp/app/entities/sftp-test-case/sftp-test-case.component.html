@@ -1,0 +1,70 @@
+<div>
+    <h2>
+        <span>Sftp Test Cases</span>
+        <button class="btn btn-primary float-right jh-create-entity create-sftp-test-case" [routerLink]="['/', { outlets: { popup: ['sftp-test-case-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Sftp Test Case
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="sftpTestCases">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Incoming File Name</span></th>
+            <th><span>Result File Name</span></th>
+            <th><span>Error File Name</span></th>
+            <th><span>File Contents</span></th>
+            <th><span>Sftproot</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sftpTestCase of sftpTestCases ;trackBy: trackId">
+                <td><a [routerLink]="['../sftp-test-case', sftpTestCase.id ]">{{sftpTestCase.id}}</a></td>
+                <td>{{sftpTestCase.incomingFileName}}</td>
+                <td>{{sftpTestCase.resultFileName}}</td>
+                <td>{{sftpTestCase.errorFileName}}</td>
+                <td>{{sftpTestCase.fileContents}}</td>
+                <td>
+                    <div *ngIf="sftpTestCase.sftprootId">
+                        <a [routerLink]="['../sftproot', sftpTestCase.sftprootId  ]" >{{sftpTestCase.sftprootId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../sftp-test-case', sftpTestCase.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'sftp-test-case/'+ sftpTestCase.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'sftp-test-case/'+ sftpTestCase.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

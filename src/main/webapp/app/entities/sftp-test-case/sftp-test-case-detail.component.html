@@ -1,0 +1,44 @@
+
+<div *ngIf="sftpTestCase">
+    <h2><span>Sftp Test Case</span> {{sftpTestCase.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Incoming File Name</span></dt>
+        <dd>
+            <span>{{sftpTestCase.incomingFileName}}</span>
+        </dd>
+        <dt><span>Result File Name</span></dt>
+        <dd>
+            <span>{{sftpTestCase.resultFileName}}</span>
+        </dd>
+        <dt><span>Error File Name</span></dt>
+        <dd>
+            <span>{{sftpTestCase.errorFileName}}</span>
+        </dd>
+        <dt><span>File Contents</span></dt>
+        <dd>
+            <span>{{sftpTestCase.fileContents}}</span>
+        </dd>
+        <dt><span>Sftproot</span></dt>
+        <dd>
+            <div *ngIf="sftpTestCase.sftprootId">
+                <a [routerLink]="['/sftproot', sftpTestCase.sftprootId]">{{sftpTestCase.sftprootId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'sftp-test-case/'+ sftpTestCase.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

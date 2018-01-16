@@ -1,0 +1,60 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "sftproot",
+            "otherEntityName": "sftproot",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "incomingFileName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": "13",
+            "fieldValidateRulesMaxlength": "36"
+        },
+        {
+            "fieldName": "resultFileName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": "13",
+            "fieldValidateRulesMaxlength": "36"
+        },
+        {
+            "fieldName": "errorFileName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": "13",
+            "fieldValidateRulesMaxlength": "36"
+        },
+        {
+            "fieldName": "fileContents",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180113021707",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "sftp_test_case",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

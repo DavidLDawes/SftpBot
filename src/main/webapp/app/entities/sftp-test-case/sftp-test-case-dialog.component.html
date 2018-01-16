@@ -1,0 +1,98 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="mySftpTestCaseLabel">Create or edit a Sftp Test Case</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!sftpTestCase.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="sftpTestCase.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_incomingFileName">Incoming File Name</label>
+            <input type="text" class="form-control" name="incomingFileName" id="field_incomingFileName"
+                [(ngModel)]="sftpTestCase.incomingFileName" required minlength="13" maxlength="36"/>
+            <div [hidden]="!(editForm.controls.incomingFileName?.dirty && editForm.controls.incomingFileName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.incomingFileName?.errors?.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.incomingFileName?.errors?.minlength">
+                   This field is required to be at least 13 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.incomingFileName?.errors?.maxlength">
+                   This field cannot be longer than 36 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_resultFileName">Result File Name</label>
+            <input type="text" class="form-control" name="resultFileName" id="field_resultFileName"
+                [(ngModel)]="sftpTestCase.resultFileName" minlength="13" maxlength="36"/>
+            <div [hidden]="!(editForm.controls.resultFileName?.dirty && editForm.controls.resultFileName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.resultFileName?.errors?.minlength">
+                   This field is required to be at least 13 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.resultFileName?.errors?.maxlength">
+                   This field cannot be longer than 36 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_errorFileName">Error File Name</label>
+            <input type="text" class="form-control" name="errorFileName" id="field_errorFileName"
+                [(ngModel)]="sftpTestCase.errorFileName" minlength="13" maxlength="36"/>
+            <div [hidden]="!(editForm.controls.errorFileName?.dirty && editForm.controls.errorFileName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.errorFileName?.errors?.minlength">
+                   This field is required to be at least 13 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.errorFileName?.errors?.maxlength">
+                   This field cannot be longer than 36 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_fileContents">File Contents</label>
+            <input type="text" class="form-control" name="fileContents" id="field_fileContents"
+                [(ngModel)]="sftpTestCase.fileContents" required/>
+            <div [hidden]="!(editForm.controls.fileContents?.dirty && editForm.controls.fileContents?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.fileContents?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_sftproot">Sftproot</label>
+            <select class="form-control" id="field_sftproot" name="sftproot" [(ngModel)]="sftpTestCase.sftprootId"  required>
+                <option *ngIf="!editForm.value.sftproot" [ngValue]="null" selected></option>
+                <option [ngValue]="sftprootOption.id" *ngFor="let sftprootOption of sftproots; trackBy: trackSftprootById">{{sftprootOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.sftproot?.dirty && editForm.controls.sftproot?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.sftproot?.errors?.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
