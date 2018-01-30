@@ -318,6 +318,11 @@
             <artifactId>spring-security-data</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>com.coreoz</groupId>
+            <artifactId>wisp</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

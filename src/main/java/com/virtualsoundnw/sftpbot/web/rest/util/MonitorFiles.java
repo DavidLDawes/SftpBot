@@ -1,6 +1,8 @@
 package com.virtualsoundnw.sftpbot.web.rest.util;
 
 
+import com.coreoz.wisp.Scheduler;
+import com.coreoz.wisp.schedule.Schedules;
 import com.virtualsoundnw.sftpbot.domain.SftpTestCase;
 import com.virtualsoundnw.sftpbot.domain.Sftproot;
 
@@ -18,6 +20,8 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 
 public class MonitorFiles implements Runnable {
+
+    static Scheduler scheduler = new Scheduler();
 
     public void run() {
         System.out.println("Test file monitoring thread starting up.");
@@ -45,32 +49,20 @@ public class MonitorFiles implements Runnable {
                         Path filename = ev.context();
                         for (SftpTestCase testCase : testCases) {
                             if (testCase.getIncomingFileName().equals(filename.toString())) {
-                                // Verify that the new
-                                //  file is a text file.
-                                String outgoingFileName = "/Users/david/" + sftproot.getOutgoingDirectory() + "/" + testCase.getResultFileName();
-                                File outgoing = new File(outgoingFileName);
-                                BufferedWriter bw = null;
-                                FileWriter fw = null;
-
-                                try {
-                                    fw = new FileWriter(outgoing);
-                                    bw = new BufferedWriter(fw);
-                                    bw.write(testCase.getFileContents());
-                                    System.out.println("Executed test case for inout file " + testCase.getIncomingFileName());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    try {
-                                        if (bw != null)
-                                            bw.close();
-                                        if (fw != null)
-                                            fw.close();
-                                    } catch (IOException ex) {
-                                        ex.printStackTrace();
-                                    }
-
+                                // check for delay request
+                                if (testCase.getDelay() != null && testCase.getDelay() > 0) {
+                                    // delay requested, so scheDule it for later
+                                    scheduler.schedule(
+                                        () -> createResponseFile(sftproot.getOutgoingDirectory(),
+                                            testCase.getResultFileName(),
+                                            testCase.getFileContents()),
+                                        Schedules.fixedDelaySchedule(testCase.getDelay()/1000)
+                                    );
+                                } else {
+                                    // No delay do it immediately
+                                    createResponseFile(sftproot.getOutgoingDirectory(),
+                                        testCase.getResultFileName(), testCase.getFileContents());
                                 }
-                                break;
                             }
                         }
                     }
@@ -96,5 +88,31 @@ public class MonitorFiles implements Runnable {
     public MonitorFiles(Sftproot sftproot, List<SftpTestCase> testCases) {
         this.sftproot =sftproot;
         this.testCases = testCases;
+    }
+
+    void createResponseFile(String outdir, String fileName, String content) {
+        String outgoingFileName = "/Users/david/" + sftproot.getOutgoingDirectory() + "/" + testCase.getResultFileName();
+        File outgoing = new File(outgoingFileName);
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+
+        try {
+            fw = new FileWriter(outgoing);
+            bw = new BufferedWriter(fw);
+            bw.write(testCase.getFileContents());
+            System.out.println("Executed test case for inout file " + testCase.getIncomingFileName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null)
+                    bw.close();
+                if (fw != null)
+                    fw.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
     }
 }
