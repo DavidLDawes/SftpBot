@@ -38,6 +38,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="delay" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="sftproot_id" type="bigint">
                 <constraints nullable="false" />
             </column>

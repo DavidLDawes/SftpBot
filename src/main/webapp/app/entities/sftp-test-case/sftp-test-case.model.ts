@@ -7,6 +7,7 @@ export class SftpTestCase implements BaseEntity {
         public resultFileName?: string,
         public errorFileName?: string,
         public fileContents?: string,
+        public delay?: number,
         public sftprootId?: number,
     ) {
     }

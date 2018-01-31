@@ -4,10 +4,12 @@ import com.virtualsoundnw.sftpbot.domain.*;
 import com.virtualsoundnw.sftpbot.service.dto.SftpTestCaseDTO;
 
 import org.mapstruct.*;
+import org.springframework.stereotype.Service;
 
 /**
  * Mapper for the entity SftpTestCase and its DTO SftpTestCaseDTO.
  */
+@Service
 @Mapper(componentModel = "spring", uses = {SftprootMapper.class})
 public interface SftpTestCaseMapper extends EntityMapper<SftpTestCaseDTO, SftpTestCase> {
 

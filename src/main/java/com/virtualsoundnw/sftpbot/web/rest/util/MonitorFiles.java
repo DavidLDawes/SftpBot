@@ -18,6 +18,7 @@ import java.nio.file.WatchService;
 import java.util.List;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
+import static java.time.Duration.ofMillis;
 
 public class MonitorFiles implements Runnable {
 
@@ -56,7 +57,8 @@ public class MonitorFiles implements Runnable {
                                         () -> createResponseFile(sftproot.getOutgoingDirectory(),
                                             testCase.getResultFileName(),
                                             testCase.getFileContents()),
-                                        Schedules.fixedDelaySchedule(testCase.getDelay()/1000)
+                                        Schedules.fixedDelaySchedule(
+                                            ofMillis(testCase.getDelay()))
                                     );
                                 } else {
                                     // No delay do it immediately
@@ -91,7 +93,7 @@ public class MonitorFiles implements Runnable {
     }
 
     void createResponseFile(String outdir, String fileName, String content) {
-        String outgoingFileName = "/Users/david/" + sftproot.getOutgoingDirectory() + "/" + testCase.getResultFileName();
+        String outgoingFileName = "/Users/david/" + sftproot.getOutgoingDirectory() + "/" + fileName;
         File outgoing = new File(outgoingFileName);
         BufferedWriter bw = null;
         FileWriter fw = null;
@@ -99,8 +101,8 @@ public class MonitorFiles implements Runnable {
         try {
             fw = new FileWriter(outgoing);
             bw = new BufferedWriter(fw);
-            bw.write(testCase.getFileContents());
-            System.out.println("Executed test case for inout file " + testCase.getIncomingFileName());
+            bw.write(content);
+            System.out.println("Executed test case, creating output file  " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

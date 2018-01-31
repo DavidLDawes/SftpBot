@@ -27,6 +27,8 @@ public class SftpTestCaseDTO implements Serializable {
     @NotNull
     private String fileContents;
 
+    private Integer delay;
+
     private Long sftprootId;
 
     public Long getId() {
@@ -69,6 +71,14 @@ public class SftpTestCaseDTO implements Serializable {
         this.fileContents = fileContents;
     }
 
+    public Integer getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
+    }
+
     public Long getSftprootId() {
         return sftprootId;
     }
@@ -106,6 +116,7 @@ public class SftpTestCaseDTO implements Serializable {
             ", resultFileName='" + getResultFileName() + "'" +
             ", errorFileName='" + getErrorFileName() + "'" +
             ", fileContents='" + getFileContents() + "'" +
+            ", delay=" + getDelay() +
             "}";
     }
 }
