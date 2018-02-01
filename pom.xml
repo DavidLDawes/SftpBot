@@ -696,6 +696,7 @@
                                 <resource>
                                     <directory>src/main/webapp</directory>
                                     <includes>
+                                        <include>swagger-ui/**</include>
                                         <include>WEB-INF/**</include>
                                     </includes>
                                 </resource>
