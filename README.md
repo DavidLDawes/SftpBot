@@ -1,6 +1,7 @@
 # sftpbot
 This application was generated using JHipster 4.13.3, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.13.3](http://www.jhipster.tech/documentation-archive/v4.13.3).
 
+Check [the SftpBot wiki](https://github.com/Remitly/SftpBot) for details
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
