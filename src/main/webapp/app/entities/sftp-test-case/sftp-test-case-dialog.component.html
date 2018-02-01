@@ -64,8 +64,12 @@
         <div class="form-group">
             <label class="form-control-label" for="field_fileContents">File Contents</label>
             <input type="text" class="form-control" name="fileContents" id="field_fileContents"
-                [(ngModel)]="sftpTestCase.fileContents" maxlength="4096"/>
+                [(ngModel)]="sftpTestCase.fileContents" required maxlength="4096"/>
             <div [hidden]="!(editForm.controls.fileContents?.dirty && editForm.controls.fileContents?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.fileContents?.errors?.required">
+                   This field is required.
+                </small>
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.fileContents?.errors?.maxlength">
                    This field cannot be longer than 4096 characters.

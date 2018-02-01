@@ -47,6 +47,7 @@
             "fieldName": "fileContents",
             "fieldType": "String",
             "fieldValidateRules": [
+                "required",
                 "maxlength"
             ],
             "fieldValidateRulesMaxlength": "4096"
