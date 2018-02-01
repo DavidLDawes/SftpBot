@@ -36,8 +36,8 @@ public class SftpTestCase implements Serializable {
     @Column(name = "error_file_name", length = 36)
     private String errorFileName;
 
-    @NotNull
-    @Column(name = "file_contents", nullable = false)
+    @Size(max = 4096)
+    @Column(name = "file_contents", length = 4096)
     private String fileContents;
 
     @Column(name = "delay")

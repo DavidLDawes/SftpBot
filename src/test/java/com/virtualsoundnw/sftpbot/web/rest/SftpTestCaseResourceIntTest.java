@@ -183,25 +183,6 @@ public class SftpTestCaseResourceIntTest {
 
     @Test
     @Transactional
-    public void checkFileContentsIsRequired() throws Exception {
-        int databaseSizeBeforeTest = sftpTestCaseRepository.findAll().size();
-        // set the field null
-        sftpTestCase.setFileContents(null);
-
-        // Create the SftpTestCase, which fails.
-        SftpTestCaseDTO sftpTestCaseDTO = sftpTestCaseMapper.toDto(sftpTestCase);
-
-        restSftpTestCaseMockMvc.perform(post("/api/sftp-test-cases")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sftpTestCaseDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<SftpTestCase> sftpTestCaseList = sftpTestCaseRepository.findAll();
-        assertThat(sftpTestCaseList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllSftpTestCases() throws Exception {
         // Initialize the database
         sftpTestCaseRepository.saveAndFlush(sftpTestCase);

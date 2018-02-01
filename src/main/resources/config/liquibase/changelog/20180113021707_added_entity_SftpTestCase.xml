@@ -34,8 +34,8 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="file_contents" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="file_contents" type="varchar(4096)">
+                <constraints nullable="true" />
             </column>
 
             <column name="delay" type="integer">
