@@ -54,6 +54,9 @@ public class SftpTestCaseResourceIntTest {
     private static final String DEFAULT_FILE_CONTENTS = "AAAAAAAAAA";
     private static final String UPDATED_FILE_CONTENTS = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_DELAY = 1;
+    private static final Integer UPDATED_DELAY = 2;
+
     @Autowired
     private SftpTestCaseRepository sftpTestCaseRepository;
 
@@ -101,7 +104,8 @@ public class SftpTestCaseResourceIntTest {
             .incomingFileName(DEFAULT_INCOMING_FILE_NAME)
             .resultFileName(DEFAULT_RESULT_FILE_NAME)
             .errorFileName(DEFAULT_ERROR_FILE_NAME)
-            .fileContents(DEFAULT_FILE_CONTENTS);
+            .fileContents(DEFAULT_FILE_CONTENTS)
+            .delay(DEFAULT_DELAY);
         // Add required entity
         Sftproot sftproot = SftprootResourceIntTest.createEntity(em);
         em.persist(sftproot);
@@ -135,6 +139,7 @@ public class SftpTestCaseResourceIntTest {
         assertThat(testSftpTestCase.getResultFileName()).isEqualTo(DEFAULT_RESULT_FILE_NAME);
         assertThat(testSftpTestCase.getErrorFileName()).isEqualTo(DEFAULT_ERROR_FILE_NAME);
         assertThat(testSftpTestCase.getFileContents()).isEqualTo(DEFAULT_FILE_CONTENTS);
+        assertThat(testSftpTestCase.getDelay()).isEqualTo(DEFAULT_DELAY);
     }
 
     @Test
@@ -209,7 +214,8 @@ public class SftpTestCaseResourceIntTest {
             .andExpect(jsonPath("$.[*].incomingFileName").value(hasItem(DEFAULT_INCOMING_FILE_NAME.toString())))
             .andExpect(jsonPath("$.[*].resultFileName").value(hasItem(DEFAULT_RESULT_FILE_NAME.toString())))
             .andExpect(jsonPath("$.[*].errorFileName").value(hasItem(DEFAULT_ERROR_FILE_NAME.toString())))
-            .andExpect(jsonPath("$.[*].fileContents").value(hasItem(DEFAULT_FILE_CONTENTS.toString())));
+            .andExpect(jsonPath("$.[*].fileContents").value(hasItem(DEFAULT_FILE_CONTENTS.toString())))
+            .andExpect(jsonPath("$.[*].delay").value(hasItem(DEFAULT_DELAY)));
     }
 
     @Test
@@ -226,7 +232,8 @@ public class SftpTestCaseResourceIntTest {
             .andExpect(jsonPath("$.incomingFileName").value(DEFAULT_INCOMING_FILE_NAME.toString()))
             .andExpect(jsonPath("$.resultFileName").value(DEFAULT_RESULT_FILE_NAME.toString()))
             .andExpect(jsonPath("$.errorFileName").value(DEFAULT_ERROR_FILE_NAME.toString()))
-            .andExpect(jsonPath("$.fileContents").value(DEFAULT_FILE_CONTENTS.toString()));
+            .andExpect(jsonPath("$.fileContents").value(DEFAULT_FILE_CONTENTS.toString()))
+            .andExpect(jsonPath("$.delay").value(DEFAULT_DELAY));
     }
 
     @Test
@@ -252,7 +259,8 @@ public class SftpTestCaseResourceIntTest {
             .incomingFileName(UPDATED_INCOMING_FILE_NAME)
             .resultFileName(UPDATED_RESULT_FILE_NAME)
             .errorFileName(UPDATED_ERROR_FILE_NAME)
-            .fileContents(UPDATED_FILE_CONTENTS);
+            .fileContents(UPDATED_FILE_CONTENTS)
+            .delay(UPDATED_DELAY);
         SftpTestCaseDTO sftpTestCaseDTO = sftpTestCaseMapper.toDto(updatedSftpTestCase);
 
         restSftpTestCaseMockMvc.perform(put("/api/sftp-test-cases")
@@ -268,6 +276,7 @@ public class SftpTestCaseResourceIntTest {
         assertThat(testSftpTestCase.getResultFileName()).isEqualTo(UPDATED_RESULT_FILE_NAME);
         assertThat(testSftpTestCase.getErrorFileName()).isEqualTo(UPDATED_ERROR_FILE_NAME);
         assertThat(testSftpTestCase.getFileContents()).isEqualTo(UPDATED_FILE_CONTENTS);
+        assertThat(testSftpTestCase.getDelay()).isEqualTo(UPDATED_DELAY);
     }
 
     @Test
