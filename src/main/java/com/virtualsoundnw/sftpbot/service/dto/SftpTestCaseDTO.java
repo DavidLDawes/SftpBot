@@ -25,6 +25,7 @@ public class SftpTestCaseDTO implements Serializable {
     private String errorFileName;
 
     @NotNull
+    @Size(max = 4096)
     private String fileContents;
 
     private Integer delay;

@@ -80,6 +80,7 @@ public class MonitorFiles implements Runnable {
                 System.out.println("Test interrupted");
             } catch (IOException ioe) {
                 System.out.println("Unable to monitor for file creation, test error");
+                break;
             }
         }
     }
