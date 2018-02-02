@@ -68,6 +68,8 @@ public class TestResource {
 
     private final SftprootRepository sftprootRepository;
     private final SftpTestCaseRepository sftpTestCaseRepository;
+    private static MonitorFiles monitorFiles;
+
     public TestResource(SftprootRepository sftprootRepository, SftpTestCaseRepository testCaseRepository) {
         this.sftprootRepository = sftprootRepository;
         this.sftpTestCaseRepository = testCaseRepository;
@@ -110,7 +112,8 @@ public class TestResource {
         }
  */
         List<SftpTestCase> sftpTestCases = sftpTestCaseRepository.findAll();
-        new MonitorFiles(sftpRoot, sftpTestCases).run();
+        monitorFiles = new MonitorFiles(sftpRoot, sftpTestCases);
+        monitorFiles.run();
         return new ResponseEntity<>(sftpRoot, HttpStatus.OK);
     }
 

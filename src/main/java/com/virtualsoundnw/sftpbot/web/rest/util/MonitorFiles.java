@@ -15,10 +15,10 @@ import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.time.Duration;
 import java.util.List;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
-import static java.time.Duration.ofMillis;
 
 public class MonitorFiles implements Runnable {
 
@@ -26,9 +26,12 @@ public class MonitorFiles implements Runnable {
 
     public void run() {
         System.out.println("Test file monitoring thread starting up.");
-        Path monitorDir = Paths.get("/Users/David/" + sftproot.getIncomingDirectory());
+        Path monitorDir = Paths.get(sftproot.getIncomingDirectory());
 
         for (;true;) {
+            if (Thread.currentThread().isInterrupted()) {
+                break;
+            }
             try {
                  WatchService watcher = monitorDir.getFileSystem().newWatchService();
                 monitorDir.register(watcher, ENTRY_CREATE);
@@ -52,13 +55,14 @@ public class MonitorFiles implements Runnable {
                             if (testCase.getIncomingFileName().equals(filename.toString())) {
                                 // check for delay request
                                 if (testCase.getDelay() != null && testCase.getDelay() > 0) {
-                                    // delay requested, so scheDule it for later
+                                    // delay requested, so schedule it for later
                                     scheduler.schedule(
                                         () -> createResponseFile(sftproot.getOutgoingDirectory(),
                                             testCase.getResultFileName(),
                                             testCase.getFileContents()),
-                                        Schedules.fixedDelaySchedule(
-                                            ofMillis(testCase.getDelay()))
+                                        Schedules.executeOnce(Schedules
+                                            .fixedDelaySchedule(
+                                                Duration.ofMillis(testCase.getDelay())))
                                     );
                                 } else {
                                     // No delay do it immediately
@@ -94,7 +98,7 @@ public class MonitorFiles implements Runnable {
     }
 
     void createResponseFile(String outdir, String fileName, String content) {
-        String outgoingFileName = "/Users/david/" + sftproot.getOutgoingDirectory() + "/" + fileName;
+        String outgoingFileName = sftproot.getOutgoingDirectory() + "/" + fileName;
         File outgoing = new File(outgoingFileName);
         BufferedWriter bw = null;
         FileWriter fw = null;
