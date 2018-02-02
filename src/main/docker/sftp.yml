@@ -3,8 +3,8 @@ services:
     sftpbot-sftp:
         image: atmoz/sftp
         volumes:
-            - ~/volumes/jhipster/sftpbot/:/home/root
+            - ~/volumes/jhipster/sftpbot/:/home/tester
         ports:
             - "2222:22"
-        command: root:admin:1001
+        command: tester:admin:1001
 # See https://hub.docker.com/r/atmoz/sftp/ for details like how to add host key
