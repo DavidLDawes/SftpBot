@@ -26,14 +26,17 @@ public class MonitorFiles implements Runnable {
 
     static Scheduler scheduler = new Scheduler();
     private List<SftpTestCase> delayedCases = new LinkedList<>();
+    static protected Thread monitorThread;
 
     public void run() {
         System.out.println("Test file monitoring thread starting up.");
+        monitorThread = Thread.currentThread();
         Path monitorDir = Paths.get(sftproot.getIncomingDirectory());
         for (;true;) {
             System.out.println("Next pass through the forever loop");
             if (Thread.currentThread().isInterrupted()) {
                 System.out.println("Got an interrupt, goodbye!");
+                monitorThread = null;
                 break;
             }
             try {
@@ -53,6 +56,7 @@ public class MonitorFiles implements Runnable {
                         WatchEvent.Kind<?> kind = event.kind();
                         if (kind == OVERFLOW) {
                             System.out.println("Error: overflow, goodbye!");
+                            monitorThread = null;
                             break;
                         }
                         // The filename is the
@@ -104,16 +108,20 @@ public class MonitorFiles implements Runnable {
                 boolean valid = watchKey.reset();
                 if (!valid) {
                     System.out.println("watchKey reset invalid, goodbye!");
+                    monitorThread = null;
                     break;
                 }
             } catch (InterruptedException ie) {
                 System.out.println("Test interrupted, goodbye!");
+                monitorThread = null;
                 break;
             } catch (IOException ioe) {
                 System.out.println("Unable to monitor for file creation, test error. Goodbye!");
+                monitorThread = null;
                 break;
             }
         }
+        monitorThread = null;
     }
 
     private final Sftproot  sftproot;
