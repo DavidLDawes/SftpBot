@@ -1,0 +1,14 @@
+version: '2'
+services:
+    sftpbot-sftp:
+        image: atmoz/sftp
+        volumes:
+            - ~/volumes/jhipster/sftpbot/:/home/tester
+            - ~/volumes/sftp.keys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key
+            - ~/volumes/sftp.keys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
+        ports:
+            - "2222:22"
+        command: tester:admin:1001
+# See SftpBot guide wiki for details on usage, how to add permanenet keys etc.
+# see https://hub.docker.com/r/atmoz/sftp/ for additional details
+

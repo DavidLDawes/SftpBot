@@ -21,6 +21,7 @@
             <th><span>Result File Name</span></th>
             <th><span>Error File Name</span></th>
             <th><span>File Contents</span></th>
+            <th><span>Delay</span></th>
             <th><span>Sftproot</span></th>
             <th></th>
             </tr>
@@ -32,6 +33,7 @@
                 <td>{{sftpTestCase.resultFileName}}</td>
                 <td>{{sftpTestCase.errorFileName}}</td>
                 <td>{{sftpTestCase.fileContents}}</td>
+                <td>{{sftpTestCase.delay}}</td>
                 <td>
                     <div *ngIf="sftpTestCase.sftprootId">
                         <a [routerLink]="['../sftproot', sftpTestCase.sftprootId  ]" >{{sftpTestCase.sftprootId}}</a>
