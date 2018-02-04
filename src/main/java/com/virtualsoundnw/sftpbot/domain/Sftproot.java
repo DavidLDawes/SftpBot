@@ -39,6 +39,15 @@ public class Sftproot implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SftpTestCase> sftpTestCases = new HashSet<>();
 
+    public Sftproot() {
+    }
+
+    public Sftproot (String incomingDirectory, String outgoingDirectory, String errorDirectory) {
+        this.incomingDirectory = incomingDirectory;
+        this.outgoingDirectory = outgoingDirectory;
+        this.errorDirectory = errorDirectory;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
