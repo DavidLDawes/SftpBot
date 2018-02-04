@@ -1,48 +1,26 @@
 package com.virtualsoundnw.sftpbot.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.virtualsoundnw.sftpbot.config.Constants;
 import com.virtualsoundnw.sftpbot.domain.SftpTestCase;
 import com.virtualsoundnw.sftpbot.domain.Sftproot;
-import com.virtualsoundnw.sftpbot.domain.User;
 import com.virtualsoundnw.sftpbot.repository.SftpTestCaseRepository;
 import com.virtualsoundnw.sftpbot.repository.SftprootRepository;
-import com.virtualsoundnw.sftpbot.repository.UserRepository;
-import com.virtualsoundnw.sftpbot.security.AuthoritiesConstants;
-import com.virtualsoundnw.sftpbot.service.MailService;
-import com.virtualsoundnw.sftpbot.service.UserService;
-import com.virtualsoundnw.sftpbot.service.dto.UserDTO;
 import com.virtualsoundnw.sftpbot.web.rest.errors.BadRequestAlertException;
-import com.virtualsoundnw.sftpbot.web.rest.errors.EmailAlreadyUsedException;
-import com.virtualsoundnw.sftpbot.web.rest.errors.LoginAlreadyUsedException;
-import com.virtualsoundnw.sftpbot.web.rest.util.HeaderUtil;
+import com.virtualsoundnw.sftpbot.web.rest.util.CleanupFiles;
 import com.virtualsoundnw.sftpbot.web.rest.util.MonitorFiles;
-import com.virtualsoundnw.sftpbot.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import com.virtualsoundnw.sftpbot.web.rest.util.StopMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * REST controller for managing tests.
@@ -112,22 +90,51 @@ public class TestResource {
         }
  */
         List<SftpTestCase> sftpTestCases = sftpTestCaseRepository.findAll();
-        monitorFiles = new MonitorFiles(sftpRoot, sftpTestCases);
-        monitorFiles.run();
+        if (monitorFiles == null) {
+            monitorFiles = new MonitorFiles(sftpRoot, sftpTestCases);
+            new Thread(monitorFiles).start();
+        }
+        return new ResponseEntity<>(sftpRoot, HttpStatus.OK);
+    }
+
+
+    /**
+     * POST  /cleanup  : Cleans up the file system for an sftproot.
+     * <p>
+     * The test ID passed in must match the ID of an sftpRoot object.
+     * The matching sftpRoot will be have it's directories flushed - all files deleted.
+     * @param id the sftpRoot object ID to clwan up.
+     * @return All three directories had a rm * attempt.
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws BadRequestAlertException 400 (Bad Request) if the test does not exist
+     */
+    @PostMapping("/cleanup/{id}")
+    @Timed
+    public ResponseEntity<Sftproot> cleanupRootTest(@PathVariable Long id) throws URISyntaxException {
+        log.debug("REST request to begin cleanup");
+
+        Sftproot sftpRoot = sftprootRepository.findOne(id);
+        log.debug("Make test directories for the sftpRoot. "
+            + "Incoming: " + sftpRoot.getIncomingDirectory()
+            + ", outgoing: "+ sftpRoot.getOutgoingDirectory()
+            + ", error: "+ sftpRoot.getErrorDirectory()
+        );
+        CleanupFiles.initCleanupFiles(sftpRoot);
+        CleanupFiles.cleanupFiles();
         return new ResponseEntity<>(sftpRoot, HttpStatus.OK);
     }
 
     /**
-     * DELETE /users/:login : delete the "login" User.
+     * DELETE /begin    : Stop the MonitorFiles thread via interrupt, if it is available
      *
-     * @param id the Long key of the sftproot to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @return status 200 (OK)
      */
-    @DeleteMapping("/begin/{id}")
+    @DeleteMapping("/begin")
     @Timed
-    public ResponseEntity<Void> deleteRootTest(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRootTest() {
         log.debug("REST request to delete testing.");
         // need to cancel the test
-        return null;
+        new StopMonitor();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

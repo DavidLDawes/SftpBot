@@ -10,4 +10,4 @@ CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
 
 EXPOSE 8080 5701/udp
 
-ADD *.war /app.war
+COPY sftpbot-0.0.1-SNAPSHOT.war /app.war
