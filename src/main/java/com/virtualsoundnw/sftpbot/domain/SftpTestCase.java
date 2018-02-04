@@ -37,8 +37,12 @@ public class SftpTestCase implements Serializable {
     private String errorFileName;
 
     @NotNull
-    @Column(name = "file_contents", nullable = false)
+    @Size(max = 4096)
+    @Column(name = "file_contents", length = 4096, nullable = false)
     private String fileContents;
+
+    @Column(name = "delay")
+    private Integer delay;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -105,6 +109,19 @@ public class SftpTestCase implements Serializable {
         this.fileContents = fileContents;
     }
 
+    public Integer getDelay() {
+        return delay;
+    }
+
+    public SftpTestCase delay(Integer delay) {
+        this.delay = delay;
+        return this;
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
+    }
+
     public Sftproot getSftproot() {
         return sftproot;
     }
@@ -147,6 +164,7 @@ public class SftpTestCase implements Serializable {
             ", resultFileName='" + getResultFileName() + "'" +
             ", errorFileName='" + getErrorFileName() + "'" +
             ", fileContents='" + getFileContents() + "'" +
+            ", delay=" + getDelay() +
             "}";
     }
 }
