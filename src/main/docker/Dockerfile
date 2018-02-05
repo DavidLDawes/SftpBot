@@ -10,4 +10,4 @@ CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
 
 EXPOSE 8080 5701/udp
 
-COPY snapshot /app.war
+ADD *.war /app.war
